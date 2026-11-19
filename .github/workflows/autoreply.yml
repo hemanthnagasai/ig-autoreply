@@ -18,6 +18,7 @@ concurrency:
 permissions:
   contents: write
   issues: write
+  actions: write
 
 jobs:
   run:
@@ -48,6 +49,20 @@ jobs:
         with:
           path: state
           key: autoreply-state-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Backup trigger (only when GitHub's timer is not firing)
+        if: always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          last=$(gh run list --workflow autoreply.yml --event schedule --limit 1 --json createdAt -q '.[0].createdAt' || true)
+          now=$(date -u +%s)
+          if [ -n "$last" ] && [ $(( now - $(date -u -d "$last" +%s) )) -lt 720 ]; then
+            echo "timer is firing (last timed run $last): no backup needed"
+          else
+            echo "no timed run in the last 12 minutes: starting the next run"
+            gh workflow run autoreply.yml --ref main -f dry_run=false
+          fi
 
       - name: Keepalive commit
         if: github.event.schedule == '17 3 1,15 * *'
