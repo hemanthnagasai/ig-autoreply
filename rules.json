@@ -1,7 +1,7 @@
 {
  "_about": "Keyword -> DM rules for @hemanth_chakka. Every DM is put together fresh from the pieces below (greeting + reel line + ask/intro + closing), so no two DMs read the same. The resource text itself (dm) stays fixed so the facts never drift. Placeholders: {name} first name (only used when we have one), {thing} the resource name, {topic} the reel the person commented on.",
  "follow_gate": true,
- "ootto_grace_minutes": 2,
+ "ootto_grace_minutes": 15,
  "max_comment_age_days": 6,
  "media_lookback": 30,
  "ignore_keywords": [
