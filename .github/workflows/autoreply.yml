@@ -22,7 +22,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 8
     env:
       IG_TOKEN: ${{ secrets.IG_TOKEN }}
       IG_USER_ID: "17841414351865744"
@@ -40,7 +40,7 @@ jobs:
           restore-keys: autoreply-state-
 
       - name: Answer SAFE / CODE comments
-        run: python autoreply.py ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '--dry-run' || '' }}
+        run: python autoreply.py --loop 240 ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '--dry-run' || '' }}
 
       - name: Save state
         if: always()

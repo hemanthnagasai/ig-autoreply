@@ -175,6 +175,18 @@ def send_dm(recipient: dict, text: str) -> None:
         call(f"{UID}/messages", {"recipient": json.dumps(recipient), "message": json.dumps({"text": text})}, "POST")
 
 
+def alert(state: dict, key: str, title: str, body: str) -> None:
+    """One GitHub issue per problem (an email to the owner), never one per run."""
+    if key in state.setdefault("issues", []) or not GH_TOKEN or not GH_REPO or DRY:
+        return
+    try:
+        http(f"https://api.github.com/repos/{GH_REPO}/issues", json.dumps({"title": title, "body": body}).encode(), "POST",
+             {"Authorization": f"Bearer {GH_TOKEN}", "Accept": "application/vnd.github+json", "Content-Type": "application/json"})
+        state["issues"].append(key); log(f"opened an issue: {key}")
+    except ApiError as e:
+        log(f"could not open issue {key}: {e}")
+
+
 def open_issue(state: dict, keyword: str) -> None:
     """One GitHub issue per unknown keyword, so the owner gets one email (never one per run)."""
     if keyword in state.setdefault("issues", []) or not GH_TOKEN or not GH_REPO or DRY:
@@ -241,6 +253,10 @@ def scan_comments(conf: dict, state: dict) -> None:
             except ApiError as e:
                 entry["s"] = "failed"; entry["e"] = str(e)[:200]; C["errors"] += 1
                 log(f"keyword {'/'.join(kws)}: private reply FAILED: {e}")
+                alert(state, "dm-failing", "Auto-DMs are failing",
+                      "A private-reply DM to a keyword comment failed with:\n\n`" + str(e)[:300] + "`\n\nIf this says "
+                      "permission / not allowed / user cannot be found for every comment, Meta is blocking this app from "
+                      "messaging people who are not on the app, and the comment keywords need another sender.")
             try:
                 if not DRY:
                     call(f"{cid}/replies", {"message": public_text(state, hits[0], name)}, "POST")
@@ -302,23 +318,28 @@ def handle_gate(conf: dict, state: dict) -> None:
 def main() -> int:
     global DRY
     ap = argparse.ArgumentParser(); ap.add_argument("--dry-run", action="store_true")
-    DRY = ap.parse_args().dry_run
+    ap.add_argument("--loop", type=int, default=0, help="keep checking every 60 s for this many seconds")
+    args = ap.parse_args(); DRY = args.dry_run
     if not TOKEN:
         log("IG_TOKEN secret is missing"); return 1
     conf = json.loads(RULES.read_text(encoding="utf-8"))
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
     state.setdefault("comments", {})
     state["comments"] = {k: v for k, v in state["comments"].items() if time.time() - v.get("t", 0) < 30 * 86400}
-    ok = True
-    try:
-        scan_comments(conf, state)
-        handle_gate(conf, state)
-    except Exception as e:
-        ok = False; log(f"run failed: {type(e).__name__}: {e}")
-    if not DRY:
-        STATE.parent.mkdir(parents=True, exist_ok=True)
-        state["last_run"] = time.time()
-        STATE.write_text(json.dumps(state, indent=1), encoding="utf-8")
+    ok, end = True, time.time() + args.loop
+    while True:
+        try:
+            scan_comments(conf, state)
+            handle_gate(conf, state)
+        except Exception as e:
+            ok = False; log(f"pass failed: {type(e).__name__}: {e}")
+        if not DRY:
+            STATE.parent.mkdir(parents=True, exist_ok=True)
+            state["last_run"] = time.time()
+            STATE.write_text(json.dumps(state, indent=1), encoding="utf-8")
+        if time.time() + 60 > end:
+            break
+        time.sleep(60)
     log("summary " + json.dumps(C) + f", {len(state['comments'])} comments on file")
     return 0 if ok else 1
 
