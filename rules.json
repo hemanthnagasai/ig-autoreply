@@ -1,23 +1,193 @@
 {
-  "_about": "Comment keyword -> DM rules for @hemanth_chakka. Copied from ootto rules 4777 (SAFE) and 4778 (CODE) on 19 Nov 2026. Edit the text here; autoreply.py reads this file on every run.",
-  "follow_gate": true,
-  "gate_dm": "Hi! Your {name} is ready 📩\nTap Follow on @hemanth_chakka, then reply SEND here and it arrives right away.",
-  "not_following_dm": "Almost there 🙂 You're not following @hemanth_chakka yet. Tap Follow, then reply SEND again.",
-  "ootto_grace_minutes": 15,
-  "max_comment_age_days": 6,
-  "media_lookback": 25,
-  "rules": [
-    {
-      "keyword": "SAFE",
-      "name": "family safety card",
-      "public_replies": ["Check your DMs 📩", "Sent it 🛡️ check your inbox", "Done, it's in your DMs 📩"],
-      "dm": "Your family safety card 🛡️\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away.\nSend this to your family group 🙏"
-    },
-    {
-      "keyword": "CODE",
-      "name": "10 ChatGPT codes",
-      "public_replies": ["Check your DMs 📩", "All 10 are in your inbox ⚡", "Done, check your DMs 📩"],
-      "dm": "10 ChatGPT \"codes\" that actually work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions."
-    }
-  ]
+ "_about": "Keyword -> DM rules for @hemanth_chakka. Every DM is put together fresh from the pieces below (greeting + reel line + ask/intro + closing), so no two DMs read the same. The resource text itself (dm) stays fixed so the facts never drift. Placeholders: {name} first name (only used when we have one), {thing} the resource name, {topic} the reel the person commented on.",
+ "follow_gate": true,
+ "ootto_grace_minutes": 15,
+ "max_comment_age_days": 6,
+ "media_lookback": 30,
+ "ignore_keywords": [
+  "CLAUDE",
+  "YES",
+  "NO"
+ ],
+ "greetings_name": [
+  "Hey {name}!",
+  "Hi {name} 🙂",
+  "Heyy {name}",
+  "Hello {name} 👋",
+  "Hii {name}!",
+  "Hey {name}, thanks!",
+  "{name}! 🙌",
+  "Namaste {name} 🙏",
+  "Hi {name}, good to see you here",
+  "Yo {name}!"
+ ],
+ "greetings_plain": [
+  "Hey!",
+  "Hi there 🙂",
+  "Heyy!",
+  "Hello! 👋",
+  "Hii!",
+  "Hey, thanks!",
+  "Hi hi 🙂",
+  "Namaste 🙏",
+  "Hey there!",
+  "Hello hello!"
+ ],
+ "context_topic": [
+  "Saw your comment on my {topic}.",
+  "Thanks for commenting on the {topic}.",
+  "Glad the {topic} was useful.",
+  "You watched the {topic} till the end, nice 😄",
+  "Your comment on the {topic} just came in.",
+  "Happy you liked the {topic}."
+ ],
+ "context_plain": [
+  "Saw your comment.",
+  "Thanks for commenting.",
+  "Got your comment 🙂",
+  "Your comment just came in."
+ ],
+ "gate_asks": [
+  "Your {thing} is ready. Hit Follow on my page first, then reply anything here and I'll send it straight away.",
+  "I've got the {thing} for you. One small thing: follow @hemanth_chakka, then send me a quick reply here and it's yours.",
+  "Sending the {thing} in a sec. Just follow the page and reply SEND here so I know you're around.",
+  "The {thing} is all set. Follow me first, then type anything back and it lands right here.",
+  "Want the {thing}? Follow the page, reply with a 👍 and I'll drop it here.",
+  "Happy to share the {thing}. Follow first, then reply 'send' when you're done.",
+  "The {thing} goes out the moment you follow and reply here. Takes 5 seconds.",
+  "Quick follow on my page and one reply here, that's all. Then the {thing} is yours."
+ ],
+ "reminders": [
+  "Looks like the follow didn't go through yet 🙂 Tap Follow on @hemanth_chakka and reply again, then the {thing} is yours.",
+  "Almost! I can't see the follow yet. Follow the page, send one more reply and I'll share the {thing}.",
+  "Hmm, Instagram says you're not following yet. Once you do, just reply here again for the {thing}.",
+  "One step left: follow @hemanth_chakka, then reply here once more. The {thing} is waiting.",
+  "Not seeing the follow on my side 🤔 Try once more, then reply and the {thing} comes right away."
+ ],
+ "intros": [
+  "Here you go 👇",
+  "As promised:",
+  "Here it is, save this one:",
+  "Done! Here's the {thing}:",
+  "Thanks for the follow 🙌 Here's the {thing}:",
+  "Here's your {thing}. Screenshot it so it doesn't get lost:",
+  "Sending it now 👇",
+  "Thanks {name}! Here's the {thing}:",
+  "There you go:"
+ ],
+ "rules": [
+  {
+   "keyword": "SAFE",
+   "name": "family safety card",
+   "aliases": [
+    "safety card"
+   ],
+   "marker": "Two-step verification",
+   "public_replies": [
+    "Sent! Check your DMs",
+    "Done, check your inbox 🙂",
+    "In your DMs now 🛡️",
+    "Just sent it 📩",
+    "Check your messages 🙌",
+    "Sent you a DM!",
+    "Sent. If you don't see it, check message requests",
+    "On its way to your inbox",
+    "Sent it over 👍",
+    "Check DMs, it's there"
+   ],
+   "dm": "🛡️ Family safety card\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away.",
+   "outros": [
+    "Send it to the family group, it helps more there 🙏",
+    "If your parents use WhatsApp, set these on their phone this weekend.",
+    "Forward it to whoever handles Amma's phone 🙂",
+    "Stay safe! Any doubt, just reply here.",
+    "Takes 2 minutes to set up. Worth it.",
+    "Share it with the one person in your family who forwards everything 😄"
+   ]
+  },
+  {
+   "keyword": "CODE",
+   "name": "list of 10 ChatGPT codes",
+   "aliases": [
+    "ChatGPT codes"
+   ],
+   "marker": "Devil's advocate",
+   "public_replies": [
+    "Sent! Check your DMs",
+    "All 10 are in your inbox ⚡",
+    "Done, check your DMs 🙂",
+    "Just sent them 📩",
+    "In your messages now",
+    "Sent you the list!",
+    "Sent. Check message requests if you don't see it",
+    "On its way 👍",
+    "Check DMs, the list is there",
+    "Sent, try number 1 first 😄"
+   ],
+   "dm": "10 ChatGPT \"codes\" that work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions.",
+   "outros": [
+    "Try number 1 tonight and tell me what it said 😄",
+    "Save your favourites in a note, you'll use them daily.",
+    "Which one worked best for you? Reply and tell me.",
+    "These work in Gemini too, not just ChatGPT.",
+    "Number 7 is my favourite before any big decision.",
+    "Send it to the friend who always gets essays back 😄"
+   ]
+  }
+ ],
+ "topics": [
+  {
+   "match": [
+    "whatsapp"
+   ],
+   "topic": "WhatsApp settings reel"
+  },
+  {
+   "match": [
+    "code word",
+    "your voice"
+   ],
+   "topic": "family code word reel"
+  },
+  {
+   "match": [
+    "power cut",
+    "electricity",
+    "tgspdcl"
+   ],
+   "topic": "power cut SMS reel"
+  },
+  {
+   "match": [
+    "crocodile",
+    "ai photo",
+    "synthid",
+    "ai-generated"
+   ],
+   "topic": "AI photo reel",
+   "extra": {
+    "SAFE": "Bonus from the reel: photo looks too wild? Gemini > add the photo > ask \"Is this AI-generated?\". No mark doesn't mean it's real, so check the news before you forward."
+   }
+  },
+  {
+   "match": [
+    "chatgpt"
+   ],
+   "topic": "ChatGPT codes reel"
+  },
+  {
+   "match": [
+    "pf balance",
+    "epfo",
+    "missed call"
+   ],
+   "topic": "PF balance reel"
+  },
+  {
+   "match": [
+    "voice note"
+   ],
+   "topic": "voice note reel"
+  }
+ ]
 }

@@ -17,6 +17,7 @@ concurrency:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   run:
@@ -27,6 +28,7 @@ jobs:
       IG_USER_ID: "17841414351865744"
       IG_USERNAME: hemanth_chakka
       STATE_FILE: state/state.json
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
