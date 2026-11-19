@@ -96,7 +96,8 @@
     "Check DMs, it's there"
    ],
    "dm": "🛡️ Family safety card\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away.",
-   "outros": [
+   "outros": [],
+   "outros_unused": [
     "Send it to the family group, it helps more there 🙏",
     "If your parents use WhatsApp, set these on their phone this weekend.",
     "Forward it to whoever handles Amma's phone 🙂",
@@ -125,7 +126,8 @@
     "Sent, try number 1 first 😄"
    ],
    "dm": "10 ChatGPT \"codes\" that work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions.",
-   "outros": [
+   "outros": [],
+   "outros_unused": [
     "Try number 1 tonight and tell me what it said 😄",
     "Save your favourites in a note, you'll use them daily.",
     "Which one worked best for you? Reply and tell me.",
@@ -193,10 +195,7 @@
  ],
  "_follow_gate_note": "19 Nov test: Meta lets this app send ONE private-reply DM per comment, but refuses any follow-up message (code 10, outside allowed window) and the follow check (code 230), even after the person replies. A follow gate needs Meta app review (Advanced Access + messaging webhooks). Until then follow_gate stays false: the resource goes in the one DM, with a follow nudge.",
  "follow_nudges": [
-  "P.S. I post one of these every week. Follow @hemanth_chakka so the next one reaches you 🙂",
-  "If this helped, a follow would mean a lot 🙏 More like this every week.",
-  "Follow the page for the next one, I keep these simple.",
-  "New tips every week on my page. Follow so you don't miss them 🙌",
-  "Follow @hemanth_chakka if you want more like this."
- ]
+  "Hope you will follow me for such more updates on time"
+ ],
+ "_owner_note": "19 Nov, owner: 'Keep ours only, just that a safe card along with a message that says Hope you will follow me for such more updates on time'. The closing line is the owner's own words, verbatim, on every resource DM; the per-keyword outros are off."
 }
