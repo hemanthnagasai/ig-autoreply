@@ -16,7 +16,8 @@ on:
         default: false
 
 concurrency:
-  group: autoreply
+  # the self-test touches no account and no state, so it runs in its own lane and never waits for (or replaces) a live run
+  group: ${{ (github.event_name == 'workflow_dispatch' && inputs.selftest) && 'autoreply-selftest' || 'autoreply' }}
   cancel-in-progress: false
 
 permissions:
