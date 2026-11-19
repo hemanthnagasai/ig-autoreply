@@ -1,0 +1,23 @@
+{
+  "_about": "Comment keyword -> DM rules for @hemanth_chakka. Copied from ootto rules 4777 (SAFE) and 4778 (CODE) on 19 Nov 2026. Edit the text here; autoreply.py reads this file on every run.",
+  "follow_gate": true,
+  "gate_dm": "Hi! Your {name} is ready 📩\nTap Follow on @hemanth_chakka, then reply SEND here and it arrives right away.",
+  "not_following_dm": "Almost there 🙂 You're not following @hemanth_chakka yet. Tap Follow, then reply SEND again.",
+  "ootto_grace_minutes": 15,
+  "max_comment_age_days": 6,
+  "media_lookback": 25,
+  "rules": [
+    {
+      "keyword": "SAFE",
+      "name": "family safety card",
+      "public_replies": ["Check your DMs 📩", "Sent it 🛡️ check your inbox", "Done, it's in your DMs 📩"],
+      "dm": "Your family safety card 🛡️\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away.\nSend this to your family group 🙏"
+    },
+    {
+      "keyword": "CODE",
+      "name": "10 ChatGPT codes",
+      "public_replies": ["Check your DMs 📩", "All 10 are in your inbox ⚡", "Done, check your DMs 📩"],
+      "dm": "10 ChatGPT \"codes\" that actually work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions."
+    }
+  ]
+}
