@@ -57,7 +57,10 @@ def http(url: str, data: bytes | None = None, method: str = "GET", headers: dict
         req = urllib.request.Request(url, data=data, method=method, headers=headers or {})
         with urllib.request.urlopen(req, timeout=timeout) as r:
             body = r.read().decode()
-            return json.loads(body) if body else {}
+            try:
+                return json.loads(body) if body else {}
+            except json.JSONDecodeError:
+                raise ApiError(f"HTTP {r.status}, not JSON ({r.headers.get('Content-Type')}): {body[:80]!r}") from None
     except urllib.error.HTTPError as e:
         try:
             err = json.loads(e.read().decode()).get("error", {})
