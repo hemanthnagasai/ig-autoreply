@@ -139,7 +139,15 @@ def compose(state: dict, conf: dict, kind: str, things: list, name: str, topic: 
                 if extra:
                     parts.append(extra)
             outro = fresh(state, sum((r.get("outros", []) for r in rules or []), []) or [""], "outro", 4)
-            body = intro + "\n\n" + "\n\n".join(parts) + ("\n\n" + outro if outro else "")
+            nudge = fresh(state, conf.get("follow_nudges") or [""], "nudge", 3) if not conf["follow_gate"] else ""
+            # Instagram caps a DM at 1000 characters: drop the bonus line, then the outro, before ever cutting the resource
+            core = [r["dm"] for r in rules or []]
+            for extras in ([p for p in parts if p not in core], []):
+                body = "\n\n".join([intro] + core + extras + [x for x in (outro, nudge) if x])
+                if len(body) <= 900:
+                    break
+            if len(body) > 900:
+                body = "\n\n".join([intro] + core)
             ctx = "" if random.random() < 0.6 else ctx
         head = " ".join(x for x in [greet, ctx] if x) if random.random() < 0.5 else "\n".join(x for x in [greet, ctx] if x)
         text = (head + ("\n" if "\n" in head or random.random() < 0.5 else " ") + body).strip() if head else body
@@ -245,6 +253,7 @@ def scan_comments(conf: dict, state: dict) -> None:
                     send_dm({"comment_id": cid}, compose(state, conf, "ask", [h["name"] for h in hits], name, topic))
                     entry["s"] = "asked"; C["asked"] += 1
                 else:
+                    hits = hits[:1]  # one private reply per comment, and both resources together pass the 1000-character DM limit
                     for h in hits:
                         h["_extra"] = top.get("extra", {}).get(h["keyword"], "")
                     send_dm({"comment_id": cid}, compose(state, conf, "resource", [h["name"] for h in hits], name, topic, hits))
