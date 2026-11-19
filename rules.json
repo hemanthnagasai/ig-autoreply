@@ -19,6 +19,11 @@
  "writer": {
   "enabled": true,
   "model": "openai/gpt-4.1-mini",
+  "endpoints": [
+   {"url": "https://models.github.ai/inference/chat/completions", "model": "openai/gpt-4.1-mini"},
+   {"url": "https://models.inference.ai.azure.com/chat/completions", "model": "gpt-4o-mini"},
+   {"url": "https://models.github.ai/inference/chat/completions", "model": "openai/gpt-4o-mini"}
+  ],
   "_note": "GitHub Models, free with the workflow's own GITHUB_TOKEN (permission models: read). Writes the DM opener and the public reply for each comment. Any failure or a reply that breaks the checks falls back to the text banks."
  },
  "greetings_name": [

@@ -249,15 +249,25 @@ def writer(conf: dict, state: dict, ctx: dict) -> dict | None:
                        "comment": ctx["text"][:300], "repeat": ctx["repeat"],
                        "recent_public": state["recent"].get("w_public_txt", [])[-6:],
                        "recent_openers": state["recent"].get("w_opener_txt", [])[-6:]}, ensure_ascii=False)
-    body = json.dumps({"model": w.get("model", "openai/gpt-4.1-mini"), "temperature": 1.0, "max_tokens": 200,
-                       "response_format": {"type": "json_object"},
-                       "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}).encode()
-    try:
-        res = http(MODELS_URL, body, "POST", {"Authorization": f"Bearer {GH_TOKEN}", "Content-Type": "application/json",
-                                              "Accept": "application/json"}, timeout=30)
-        out = json.loads(res["choices"][0]["message"]["content"])
-    except (ApiError, KeyError, IndexError, TypeError, json.JSONDecodeError) as e:
-        log(f"writer unavailable ({str(e)[:120]}): using the text banks")
+    out, errors = None, []
+    endpoints = w.get("endpoints") or [{"url": MODELS_URL, "model": w.get("model", "openai/gpt-4.1-mini")}]
+    start = state.get("writer_endpoint", 0) % len(endpoints)  # the one that last worked goes first
+    for k in [start] + [i for i in range(len(endpoints)) if i != start]:
+        ep = endpoints[k]
+        body = json.dumps({"model": ep["model"], "temperature": 1.0, "max_tokens": 200,
+                           "response_format": {"type": "json_object"},
+                           "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}).encode()
+        try:
+            res = http(ep["url"], body, "POST", {"Authorization": f"Bearer {GH_TOKEN}", "Content-Type": "application/json",
+                                                 "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"},
+                       timeout=30)
+            out = json.loads(res["choices"][0]["message"]["content"])
+            state["writer_endpoint"] = k
+            break
+        except (ApiError, KeyError, IndexError, TypeError, json.JSONDecodeError) as e:
+            errors.append(f"#{k}: {str(e)[:90]}")
+    if out is None:
+        log(f"writer unavailable ({'; '.join(errors)}): using the text banks")
         return None
     if out.get("skip") is True:
         return {"skip": True}
