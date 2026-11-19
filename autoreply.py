@@ -165,8 +165,11 @@ def public_text(state: dict, rule: dict, name: str) -> str:
 # ---------- what each post is about ----------
 
 def topic_of(conf: dict, caption: str) -> dict:
-    c = (caption or "").lower()
-    return next((t for t in conf.get("topics", []) if any(m in c for m in t["match"])), {})
+    """The reel's topic from its hook: the first two caption lines that are not the 'Comment X' ask. Only those lines
+    count, because the body often mentions other things (the voice-note reel's body says WhatsApp)."""
+    lines = [l.strip() for l in (caption or "").splitlines() if l.strip() and not re.match(r"(?i)comment\s", l.strip())]
+    head = " ".join(lines[:2]).lower()
+    return next((t for t in conf.get("topics", []) if any(m in head for m in t["match"])), {})
 
 
 def caption_keywords(caption: str) -> set:

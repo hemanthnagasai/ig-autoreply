@@ -37,9 +37,9 @@
   "Saw your comment on my {topic}.",
   "Thanks for commenting on the {topic}.",
   "Glad the {topic} was useful.",
-  "You watched the {topic} till the end, nice 😄",
   "Your comment on the {topic} just came in.",
-  "Happy you liked the {topic}."
+  "Happy you liked the {topic}.",
+  "Thanks for checking out the {topic}."
  ],
  "context_plain": [
   "Saw your comment.",
@@ -152,6 +152,7 @@
   {
    "match": [
     "power cut",
+    "power will be cut",
     "electricity",
     "tgspdcl"
    ],
@@ -171,7 +172,7 @@
   },
   {
    "match": [
-    "chatgpt"
+    "codes"
    ],
    "topic": "ChatGPT codes reel"
   },
