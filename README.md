@@ -16,13 +16,19 @@ After that comment's own random wait of 2-7 minutes:
 2. A short public reply goes under their comment, reacting to what they said (skipped if the account already replied).
 
 Rules that keep it human:
-- **Written fresh each time.** The opener and the public reply come from a small model on GitHub Models
-  (`openai/gpt-4.1-mini`, free with the workflow's own `GITHUB_TOKEN`, permission `models: read`). It is told to write
-  as Hemanth types on his phone, vary wording and length, add no facts, numbers, links or promises, and not answer
-  questions itself. Every answer is checked (length, no links/digits/@/#, no em dashes, no bot phrases like "Thank you
-  for your comment", not a repeat of a recent line). If the check fails or the model is down, the text banks in
-  `rules.json` are used instead (greetings, reel lines, intros, and public replies by comment type: thanks, question,
-  emoji, tag, other, repeat).
+- **Written fresh each time.** Today the text banks in `rules.json` write the opener and the public reply: the
+  comment is sorted into a kind (keyword, thanks, question, tag, emoji, other, repeat) and the DM gets a greeting
+  (first name once at most), a line reacting to that kind (`react_by_type`: "Good question!", "Nice, you tagged a
+  friend 😄") or naming the reel, and an intro; the public reply comes from `public_by_type` (or the resource's own
+  `public_replies` for a keyword). Shapes vary (one line or two, with or without the reaction) and recent lines are
+  never reused.
+- **Optional: Claude writes each reply.** If the repo has the secret `ANTHROPIC_API_KEY` (the owner's own paid key;
+  Claude Haiku costs well under a rupee per hundred comments), each opener and public reply is written by Claude for
+  that exact comment, in Hemanth's voice, adding no facts, numbers, links or promises and never answering questions
+  itself. Every answer is checked (length, no links/digits/@/#, no em dashes, no bot phrases, not a repeat) and a bad
+  one falls back to the banks. To switch on: `gh secret set ANTHROPIC_API_KEY --repo hemanthnagasai/ig-autoreply`.
+  GitHub Models (free) was tried first on 19 Nov 2026: its address answered only a bare "OK" and the older one no
+  longer exists, so `github_models` is false in `rules.json`.
 - **One DM per person per post.** A second comment from the same person on the same post gets only a short public
   reply.
 - **Spam, promotions, bots and abuse get nothing** (a pattern check, then the model's judgement).
@@ -64,7 +70,7 @@ opens one GitHub issue (an email). Add its entry, push, and the waiting comments
   last 12 minutes, it starts the next run itself.
 - A keepalive commit on the 1st and 15th stops GitHub pausing the schedule after 60 days without activity.
 - Run by hand: Actions tab > autoreply > Run workflow. Tick "Dry run" to read without sending, or "Self-test" to see
-  sample replies the writer makes for made-up comments. Each run's log ends with a summary line (comments seen,
+  sample replies for made-up comments. Each run's log ends with a summary line (comments seen,
   eligible, sent, public only, spam skipped, waiting for a resource, writer vs banks, errors).
 - `any_comment_since` (19 Nov 13:45 UTC): comments older than the switch-over are never touched, so nobody from before
   gets a late or second DM.
@@ -80,8 +86,8 @@ turns it back on once the app is approved.
 ## Privacy
 
 The repo and its logs are public: logs print counts only, never usernames or comment text. The cached state holds
-comment ids, SHA-256 hashes and the last few written lines with first names replaced by `{name}`. The writer model
-(GitHub Models) sees the comment text and a first name, both already public on Instagram.
+comment ids, SHA-256 hashes and the last few written lines with first names replaced by `{name}`. When the Claude
+writer is on, it sees the comment text and a first name, both already public on Instagram.
 
 ## Alerts and fixes
 
