@@ -4,6 +4,10 @@
  "ootto_grace_minutes": 2,
  "max_comment_age_days": 6,
  "media_lookback": 30,
+ "_send_words_note": "19 Nov, owner said yes: a comment like 'Send' (no keyword) gets the resource the post's own caption asks for (Comment SAFE -> the SAFE card). On a post whose caption asks for no keyword, nothing is sent.",
+ "send_words": [
+  "SEND"
+ ],
  "ignore_keywords": [
   "CLAUDE",
   "YES",

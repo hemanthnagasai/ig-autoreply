@@ -181,6 +181,11 @@ def match(text: str, rules: list) -> list:
     return [r for r in rules if re.search(rf"(?<![A-Za-z]){re.escape(r['keyword'])}(?![A-Za-z])", text or "", re.I)]
 
 
+def send_word(text: str, conf: dict) -> bool:
+    """A comment that only asks for the thing ("Send", "pls send") without the keyword."""
+    return any(re.search(rf"(?<![A-Za-z]){re.escape(w)}(?![A-Za-z])", text or "", re.I) for w in conf.get("send_words", []))
+
+
 def send_dm(recipient: dict, text: str) -> None:
     if not DRY:
         call(f"{UID}/messages", {"recipient": json.dumps(recipient), "message": json.dumps({"text": text})}, "POST")
@@ -236,6 +241,10 @@ def scan_comments(conf: dict, state: dict) -> None:
             if cid in state["comments"] or user == ME:
                 continue
             hits = match(c.get("text", ""), rules)
+            if not hits and send_word(c.get("text", ""), conf):
+                # "send" / "send pls": give the resource this post's caption asks for ("Comment SAFE" -> SAFE)
+                asked = caption_keywords(m.get("caption"))
+                hits = [r for r in rules if r["keyword"] in asked]
             if not hits:
                 continue
             age_min = (now - ts(c["timestamp"])) / 60
