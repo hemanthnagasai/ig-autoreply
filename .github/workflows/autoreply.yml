@@ -10,6 +10,10 @@ on:
         description: "Dry run (send nothing)"
         type: boolean
         default: false
+      selftest:
+        description: "Self-test: print replies for made-up comments (touches no account)"
+        type: boolean
+        default: false
 
 concurrency:
   group: autoreply
@@ -19,6 +23,7 @@ permissions:
   contents: write
   issues: write
   actions: write
+  models: read   # GitHub Models: writes each reply fresh (free with this workflow's own token)
 
 jobs:
   run:
@@ -40,18 +45,23 @@ jobs:
           key: autoreply-state-${{ github.run_id }}
           restore-keys: autoreply-state-
 
-      - name: Answer SAFE / CODE comments
+      - name: Self-test (made-up comments only)
+        if: github.event_name == 'workflow_dispatch' && inputs.selftest
+        run: python autoreply.py --selftest
+
+      - name: Answer comments (each post's own resource)
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.selftest) }}
         run: python autoreply.py --loop 240 ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '--dry-run' || '' }}
 
       - name: Save state
-        if: always()
+        if: always() && !(github.event_name == 'workflow_dispatch' && inputs.selftest)
         uses: actions/cache/save@v4
         with:
           path: state
           key: autoreply-state-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Backup trigger (only when GitHub's timer is not firing)
-        if: always() && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+        if: always() && !(github.event_name == 'workflow_dispatch' && (inputs.dry_run || inputs.selftest))
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

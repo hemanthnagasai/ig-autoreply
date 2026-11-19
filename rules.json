@@ -1,7 +1,12 @@
 {
- "_about": "Keyword -> DM rules for @hemanth_chakka. Every DM is put together fresh from the pieces below (greeting + reel line + ask/intro + closing), so no two DMs read the same. The resource text itself (dm) stays fixed so the facts never drift. Placeholders: {name} first name (only used when we have one), {thing} the resource name, {topic} the reel the person commented on.",
+ "_about": "Comment -> DM auto-reply for @hemanth_chakka. ANY comment on a post gets one DM carrying THAT post's own resource (posts -> resources), plus a short public reply. The resource text stays word for word; everything around it (greeting, a line reacting to the comment, the public reply) is written fresh each time by the writer model, with the text banks below as the fallback. Placeholders in the banks: {name} first name (only used when we have one), {thing} the resource name, {topic} the reel the person commented on.",
+ "mode": "any_comment",
+ "any_comment_since": "2026-11-19T13:45:00+0000",
+ "_any_comment_since_note": "Switch-over to any-comment mode (19 Nov, owner). Comments older than this are never touched, so nobody from before gets a late or second DM.",
  "follow_gate": false,
- "ootto_grace_minutes": 2,
+ "min_delay_minutes": 2,
+ "max_delay_minutes": 7,
+ "_delay_note": "Each comment waits its own random 2-7 minutes before the reply, so replies don't land at a machine-like fixed time.",
  "max_comment_age_days": 6,
  "media_lookback": 30,
  "ignore_keywords": [
@@ -9,6 +14,13 @@
   "YES",
   "NO"
  ],
+ "closing_line": "Hope you will follow me for such more updates on time",
+ "_owner_note": "19 Nov, owner: 'Keep ours only, just that a safe card along with a message that says Hope you will follow me for such more updates on time'. closing_line is the owner's own words, verbatim, at the end of every DM.",
+ "writer": {
+  "enabled": true,
+  "model": "openai/gpt-4.1-mini",
+  "_note": "GitHub Models, free with the workflow's own GITHUB_TOKEN (permission models: read). Writes the DM opener and the public reply for each comment. Any failure or a reply that breaks the checks falls back to the text banks."
+ },
  "greetings_name": [
   "Hey {name}!",
   "Hi {name} 🙂",
@@ -47,35 +59,78 @@
   "Got your comment 🙂",
   "Your comment just came in."
  ],
- "gate_asks": [
-  "Your {thing} is ready. Hit Follow on my page first, then reply anything here and I'll send it straight away.",
-  "I've got the {thing} for you. One small thing: follow @hemanth_chakka, then send me a quick reply here and it's yours.",
-  "Sending the {thing} in a sec. Just follow the page and reply SEND here so I know you're around.",
-  "The {thing} is all set. Follow me first, then type anything back and it lands right here.",
-  "Want the {thing}? Follow the page, reply with a 👍 and I'll drop it here.",
-  "Happy to share the {thing}. Follow first, then reply 'send' when you're done.",
-  "The {thing} goes out the moment you follow and reply here. Takes 5 seconds.",
-  "Quick follow on my page and one reply here, that's all. Then the {thing} is yours."
- ],
- "reminders": [
-  "Looks like the follow didn't go through yet 🙂 Tap Follow on @hemanth_chakka and reply again, then the {thing} is yours.",
-  "Almost! I can't see the follow yet. Follow the page, send one more reply and I'll share the {thing}.",
-  "Hmm, Instagram says you're not following yet. Once you do, just reply here again for the {thing}.",
-  "One step left: follow @hemanth_chakka, then reply here once more. The {thing} is waiting.",
-  "Not seeing the follow on my side 🤔 Try once more, then reply and the {thing} comes right away."
- ],
  "intros": [
   "Here you go 👇",
   "As promised:",
   "Here it is, save this one:",
-  "Done! Here's the {thing}:",
-  "Here's your {thing}. Screenshot it so it doesn't get lost:",
+  "Done! Sending the {thing}:",
+  "Sending the {thing}. Screenshot it so it doesn't get lost:",
   "Sending it now 👇",
-  "Thanks {name}! Here's the {thing}:",
-  "There you go:"
+  "Thanks {name}! Sending the {thing} 👇",
+  "There you go:",
+  "The {thing} from the reel 👇",
+  "Kept it short for you 👇"
  ],
- "rules": [
-  {
+ "public_by_type": {
+  "_about": "Fallback public replies, picked by what the comment looks like. Resources with their own public_replies use those for keyword comments.",
+  "thanks": [
+   "Thank you 🙏 sent you the {thing} too",
+   "Glad it helped! Check your DMs",
+   "Means a lot 🙌 the {thing} is in your DMs",
+   "Thanks yaar! Sent you the {thing}",
+   "Happy it was useful 🙂 DM'd you",
+   "Thank you! Something's waiting in your DMs 📩"
+  ],
+  "question": [
+   "Good question. Sent you the {thing}, start there",
+   "Check your DMs first, the {thing} should help 🙂",
+   "Sent you the {thing}, have a look",
+   "DM'd you the {thing} 📩"
+  ],
+  "emoji": [
+   "🙌",
+   "😄🙏",
+   "Sent you something 📩",
+   "❤️ check your DMs",
+   "🙏 DM'd you"
+  ],
+  "tag": [
+   "Good call tagging them 😄 sent you the {thing}",
+   "Send it their way too! DM'd you the {thing}",
+   "Haha they need this 😄 check your DMs",
+   "Sent you the {thing}, forward it to them 🙌"
+  ],
+  "other": [
+   "Sent you the {thing} 📩",
+   "Check your DMs 🙂",
+   "DM'd you!",
+   "Sent. If you don't see it, check message requests",
+   "In your DMs now 🙌",
+   "Just sent you the {thing}"
+  ],
+  "repeat": [
+   "🙏",
+   "Thank you!",
+   "😄",
+   "Glad you're here 🙌",
+   "❤️",
+   "Haha thanks 🙂"
+  ]
+ },
+ "gate_asks": [
+  "Your {thing} is ready. Hit Follow on my page first, then reply anything here and I'll send it straight away.",
+  "I've got the {thing} for you. One small thing: follow @hemanth_chakka, then send me a quick reply here and it's yours.",
+  "Sending the {thing} in a sec. Follow the page and reply SEND here so I know you're around.",
+  "The {thing} is all set. Follow me first, then type anything back and it lands right here."
+ ],
+ "reminders": [
+  "Looks like the follow didn't go through yet 🙂 Tap Follow on @hemanth_chakka and reply again, then the {thing} is yours.",
+  "Almost! I can't see the follow yet. Follow the page, send one more reply and I'll share the {thing}.",
+  "One step left: follow @hemanth_chakka, then reply here once more. The {thing} is waiting."
+ ],
+ "_follow_gate_note": "19 Nov test: Meta lets this app send ONE private-reply DM per comment, but refuses any follow-up message (code 10, outside allowed window) and the follow check (code 230), even after the person replies. A follow gate needs Meta app review (Advanced Access + messaging webhooks). Until then follow_gate stays false.",
+ "resources": {
+  "safety_card": {
    "keyword": "SAFE",
    "name": "family safety card",
    "aliases": [
@@ -94,18 +149,9 @@
     "Sent it over 👍",
     "Check DMs, it's there"
    ],
-   "dm": "🛡️ Family safety card\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away.",
-   "outros": [],
-   "outros_unused": [
-    "Send it to the family group, it helps more there 🙏",
-    "If your parents use WhatsApp, set these on their phone this weekend.",
-    "Forward it to whoever handles Amma's phone 🙂",
-    "Stay safe! Any doubt, just reply here.",
-    "Takes 2 minutes to set up. Worth it.",
-    "Share it with the one person in your family who forwards everything 😄"
-   ]
+   "dm": "🛡️ Family safety card\nWhatsApp > Settings:\n1. Privacy > Calls > Silence unknown callers ON\n2. Privacy > Advanced > Protect IP address in calls ON\n3. Account > Two-step verification > set a PIN\n4. Family group > tap its name > Advanced chat privacy ON\nPanic call asking for money, even in a voice you know? Ask your family code word. No word = hang up, call back on the saved number.\n\"Power cut tonight, call this officer\" SMS = scam. Never install AnyDesk for anyone.\nMoney lost? Call 1930 right away."
   },
-  {
+  "chatgpt_codes": {
    "keyword": "CODE",
    "name": "list of 10 ChatGPT codes",
    "aliases": [
@@ -124,77 +170,103 @@
     "Check DMs, the list is there",
     "Sent, try number 1 first 😄"
    ],
-   "dm": "10 ChatGPT \"codes\" that work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions.",
-   "outros": [],
-   "outros_unused": [
-    "Try number 1 tonight and tell me what it said 😄",
-    "Save your favourites in a note, you'll use them daily.",
-    "Which one worked best for you? Reply and tell me.",
-    "These work in Gemini too, not just ChatGPT.",
-    "Number 7 is my favourite before any big decision.",
-    "Send it to the friend who always gets essays back 😄"
-   ]
+   "dm": "10 ChatGPT \"codes\" that work (plain words, any AI):\n1. Devil's advocate: [your idea]\n2. Explain like I'm 10, with a daily-life example: [topic]\n3. Quiz me on [topic], 5 questions, one at a time\n4. Answer in 3 lines: [question]\n5. Make this a table: [messy info]\n6. Give me 3 really different options: [task]\n7. What am I missing? List the risks: [plan]\n8. Check this and explain each fix: [your text]\n9. Rewrite this, simple and polite: [message]\n10. Ask me questions first, then answer: [problem]\nSave your favourites in Settings > Personalization > Custom instructions."
+  },
+  "voice_note": {
+   "name": "voice note steps",
+   "dm": "🎧 Read a long voice note in seconds (Android):\n1. In WhatsApp, press and hold the voice note\n2. Tap the 3 dots, then Share\n3. Swipe across the share list and pick Gemini\n4. Type: Help me summarise this audio recording in 5 points.\nFree Gemini takes up to 10 minutes of audio, so most family voice notes fit. Free accounts have a daily limit on audio uploads.\nFull steps: https://techwithhemanth.vercel.app/library/voice-note-gemini"
+  },
+  "pf_missed_call": {
+   "name": "PF balance steps",
+   "dm": "📞 PF balance with one missed call:\nFrom the mobile linked to your UAN, call 99660 44425. It rings once and cuts by itself. EPFO then sends an SMS with your PF balance, last contribution and UAN. Free.\nIn Telugu: SMS EPFOHO <your UAN> TEL to 77382 99899 from the same number.\nWorks only if your UAN is active and your Aadhaar, PAN or bank account is linked to it.\nEPFO never asks for an OTP or a fee for this. If someone does, it's a scam."
+  },
+  "anthropic_ipo": {
+   "name": "fine print from Anthropic's IPO filing",
+   "dm": "Anthropic's IPO, the fine print:\nThe filing shows a $104 billion loss for the nine months to 30 Sep 2026. $94.3 billion of that is an accounting entry on investor deals, not cash spent. The operating loss was $1.26 billion.\nSales went from $41 million in 2023 to $33.2 billion in the first nine months of 2026.\nFull breakdown with the SEC filing: https://techwithhemanth.vercel.app/library/anthropic-ipo"
+  },
+  "claude_meetings": {
+   "name": "Claude Meetings summary",
+   "dm": "Claude Meetings, in short:\nClaude joins your Google Meet call as a visible participant. Say \"Claude\" and ask something, or type in the Meet chat, and it answers in writing. Say \"Claude, make a doc\" and it writes the plan while you talk.\nAfter the call, people from your organisation on the invite get an email with the summary and action items.\nOnly on Claude's Team and Enterprise plans, Google Meet only for now.\nMore: https://techwithhemanth.vercel.app/library/claude-meetings"
+  },
+  "sleep_mode": {
+   "name": "SLEEP MODE episode links",
+   "dm": "SLEEP MODE, a short story series made with AI.\nEpisode 1, Almost: https://techwithhemanth.vercel.app/library/sleep-mode-ep01\nEpisode 2, Night Shift: https://techwithhemanth.vercel.app/library/sleep-mode-ep02"
+  },
+  "ms_outage": {
+   "name": "Microsoft outage explainer",
+   "dm": "The 12-13 Nov Microsoft 365 outage in plain words: what broke, why only some apps, what Microsoft says caused it, and what to do if your mail is stuck.\nhttps://techwithhemanth.vercel.app/library/microsoft-365-outage"
+  },
+  "jensen": {
+   "name": "Jensen Huang story page",
+   "dm": "Jensen Huang leaving Nvidia: what Nvidia said, what his own email said, and what happened to the stock.\nhttps://techwithhemanth.vercel.app/library/jensen-quits-nvidia"
+  },
+  "gemini_students": {
+   "name": "free Google AI Plus page for students",
+   "dm": "College students in India can claim a year of Google AI Plus free, until 31 December 2026.\nThe page to claim it, the steps and the catch: https://techwithhemanth.vercel.app/library/gemini-students"
+  },
+  "fable_saltline": {
+   "name": "Saltline game page",
+   "dm": "Saltline, the browser shooter Claude Fable 5.2 made with no human feedback. Play it free, see the prompt and read what people think:\nhttps://techwithhemanth.vercel.app/library/fable-52-saltline"
+  },
+  "zero_gadget": {
+   "name": "3 free phone features",
+   "dm": "Your phone reads any language, talks back and finds whatever you circle. All three are free.\nHow to turn each one on: https://techwithhemanth.vercel.app/library/zero-gadget"
+  },
+  "ai_squad": {
+   "name": "how this reel was made",
+   "dm": "No video editor: the whole reel is code that Claude Code wrote.\nThe skill, the three prompts and every step in order: https://techwithhemanth.vercel.app/library/ai-squad"
+  },
+  "paisa_double": {
+   "name": "scam check prompt",
+   "dm": "Guaranteed profit means scam. Paste the message into any AI and ask one thing: is this real?\nThe prompt to copy: https://techwithhemanth.vercel.app/library/paisa-double"
+  },
+  "never_type_into_ai": {
+   "name": "list of things to never type into AI",
+   "dm": "Your AI chats get saved on someone else's server. The six things that should never go in them, and the trick: swap the real thing for XXXX and AI helps you the same way.\nhttps://techwithhemanth.vercel.app/library/never-type-into-ai"
+  },
+  "photo_blackmail": {
+   "name": "photo blackmail steps",
+   "dm": "Someone edits your photo and demands money? Don't pay. Pay once, and they ask again.\nNever upload the photo to AI: describe it in words.\nAll 3 prompts, step by step: https://techwithhemanth.vercel.app/library/photo-blackmail"
+  },
+  "fresher_interview": {
+   "name": "interview practice prompt",
+   "dm": "Skip \"top 10 questions\". Give AI the job description and what you really know, and let it interview you one question at a time.\nThe prompt to copy: https://techwithhemanth.vercel.app/library/fresher-interview-prep"
+  },
+  "giveaway_closed": {
+   "name": "link to my site",
+   "dm": "That Claude Pro giveaway closed on 29 Oct, sorry!\nEverything I share now, with the steps and prompts, is here: https://techwithhemanth.vercel.app"
+  },
+  "site_home": {
+   "name": "link to my site",
+   "dm": "Everything I make, with the steps and prompts, is here: https://techwithhemanth.vercel.app"
   }
+ },
+ "posts": [
+  {"shortcode": "Df7OqxWTxkI", "topic": "WhatsApp settings reel", "resource": "safety_card"},
+  {"shortcode": "Df4oFBUzuPw", "topic": "voice note reel", "resource": "voice_note"},
+  {"shortcode": "Df2GUelzUt-", "topic": "Anthropic IPO reel", "resource": "anthropic_ipo"},
+  {"shortcode": "Dfw22YqzwsF", "topic": "Claude Meetings reel", "resource": "claude_meetings"},
+  {"shortcode": "DfucgzATVwb", "topic": "SLEEP MODE episode", "resource": "sleep_mode"},
+  {"shortcode": "Dfr0_JGTlLS", "topic": "Microsoft outage reel", "resource": "ms_outage"},
+  {"shortcode": "DfpfNPJz6IA", "topic": "Jensen Huang reel", "resource": "jensen"},
+  {"shortcode": "DfpNmJKTarM", "topic": "free Gemini for students reel", "resource": "gemini_students"},
+  {"shortcode": "DfmmQ4ITora", "topic": "Claude Fable game reel", "resource": "fable_saltline"},
+  {"shortcode": "Dfcc7Kjz5Bz", "topic": "SLEEP MODE episode", "resource": "sleep_mode"},
+  {"shortcode": "DfFZ7J_zmH_", "topic": "free phone features reel", "resource": "zero_gadget"},
+  {"shortcode": "DfCxV-gz3bn", "topic": "AI squad reel", "resource": "ai_squad"},
+  {"shortcode": "De9W7vSTtVx", "topic": "3% profit scam reel", "resource": "paisa_double"},
+  {"shortcode": "De4iCjKEwj8", "topic": "never-type-into-AI post", "resource": "never_type_into_ai"},
+  {"shortcode": "DezM3IUxOJW", "topic": "Claude Pro giveaway reel", "resource": "giveaway_closed"},
+  {"shortcode": "Det8djrx72X", "topic": "photo blackmail reel", "resource": "photo_blackmail"},
+  {"shortcode": "DelKEatTxJm", "topic": "interview prep reel", "resource": "fresher_interview"},
+  {"shortcode": "Dehl2-bzMtl", "topic": "intro reel", "resource": "site_home"},
+  {"match": ["code word", "your voice"], "topic": "family code word reel", "resource": "safety_card"},
+  {"match": ["power cut", "power will be cut", "electricity", "tgspdcl"], "topic": "power cut SMS reel", "resource": "safety_card"},
+  {"match": ["crocodile", "ai photo", "synthid", "ai-generated"], "topic": "AI photo reel", "resource": "safety_card",
+   "extra": "Bonus from the reel: photo looks too wild? Gemini > add the photo > ask \"Is this AI-generated?\". No mark doesn't mean it's real, so check the news before you forward."},
+  {"match": ["pf balance", "epfo", "missed call"], "topic": "PF balance reel", "resource": "pf_missed_call"},
+  {"match": ["chatgpt \"codes\"", "codes"], "topic": "ChatGPT codes reel", "resource": "chatgpt_codes"},
+  {"match": ["whatsapp"], "topic": "WhatsApp settings post", "resource": "safety_card"}
  ],
- "topics": [
-  {
-   "match": [
-    "whatsapp"
-   ],
-   "topic": "WhatsApp settings reel"
-  },
-  {
-   "match": [
-    "code word",
-    "your voice"
-   ],
-   "topic": "family code word reel"
-  },
-  {
-   "match": [
-    "power cut",
-    "power will be cut",
-    "electricity",
-    "tgspdcl"
-   ],
-   "topic": "power cut SMS reel"
-  },
-  {
-   "match": [
-    "crocodile",
-    "ai photo",
-    "synthid",
-    "ai-generated"
-   ],
-   "topic": "AI photo reel",
-   "extra": {
-    "SAFE": "Bonus from the reel: photo looks too wild? Gemini > add the photo > ask \"Is this AI-generated?\". No mark doesn't mean it's real, so check the news before you forward."
-   }
-  },
-  {
-   "match": [
-    "codes"
-   ],
-   "topic": "ChatGPT codes reel"
-  },
-  {
-   "match": [
-    "pf balance",
-    "epfo",
-    "missed call"
-   ],
-   "topic": "PF balance reel"
-  },
-  {
-   "match": [
-    "voice note"
-   ],
-   "topic": "voice note reel"
-  }
- ],
- "_follow_gate_note": "19 Nov test: Meta lets this app send ONE private-reply DM per comment, but refuses any follow-up message (code 10, outside allowed window) and the follow check (code 230), even after the person replies. A follow gate needs Meta app review (Advanced Access + messaging webhooks). Until then follow_gate stays false: the resource goes in the one DM, with a follow nudge.",
- "follow_nudges": [
-  "Hope you will follow me for such more updates on time"
- ],
- "_owner_note": "19 Nov, owner: 'Keep ours only, just that a safe card along with a message that says Hope you will follow me for such more updates on time'. The closing line is the owner's own words, verbatim, on every resource DM; the per-keyword outros are off."
+ "_posts_note": "How a post finds its resource: 1) its shortcode (the part after /reel/ in its link), 2) the first 'match' entry whose words appear in the caption's first two lines (not counting a line that starts with 'Comment'), 3) the 'Comment XYZ' keyword in its caption. A post with none of these keeps its comments waiting (up to 6 days) and opens one GitHub issue; add its entry and push, and the waiting comments get answered on the next run."
 }
