@@ -18,13 +18,43 @@
  "_owner_note": "19 Nov, owner: 'Keep ours only, just that a safe card along with a message that says Hope you will follow me for such more updates on time'. closing_line is the owner's own words, verbatim, at the end of every DM.",
  "writer": {
   "enabled": true,
+  "claude_model": "claude-haiku-5-5",
+  "github_models": false,
   "model": "openai/gpt-4.1-mini",
   "endpoints": [
    {"url": "https://models.github.ai/inference/chat/completions", "model": "openai/gpt-4.1-mini"},
-   {"url": "https://models.inference.ai.azure.com/chat/completions", "model": "gpt-4o-mini"},
-   {"url": "https://models.github.ai/inference/chat/completions", "model": "openai/gpt-4o-mini"}
+   {"url": "https://models.inference.ai.azure.com/chat/completions", "model": "gpt-4o-mini"}
   ],
-  "_note": "GitHub Models, free with the workflow's own GITHUB_TOKEN (permission models: read). Writes the DM opener and the public reply for each comment. Any failure or a reply that breaks the checks falls back to the text banks."
+  "_note": "Writes the DM opener and the public reply for each comment. Claude (claude_model) is used when the repo has the ANTHROPIC_API_KEY secret (owner's paid key; about a cent per few hundred comments with Haiku). GitHub Models (github_models) answered only a bare 'OK' on 19 Nov 2026, so it is off. With no writer, the text banks below write everything, reacting to the kind of comment (react_by_type, public_by_type). Every writer answer is checked; a bad one falls back to the banks."
+ },
+ "react_by_type": {
+  "_about": "Fallback DM line reacting to what the comment looks like (after the greeting). Never answers a question or promises anything.",
+  "thanks": [
+   "Glad it helped!",
+   "Happy it was useful 🙂",
+   "Thank you, that means a lot.",
+   "Love that you found it useful.",
+   "So glad you liked it!",
+   "Thanks for the kind words 🙏"
+  ],
+  "question": [
+   "Good question!",
+   "Fair question.",
+   "Good one to ask.",
+   "Glad you asked."
+  ],
+  "tag": [
+   "Nice, you tagged a friend 😄",
+   "Love that you're sharing it.",
+   "Good call sending it to a friend.",
+   "Your friend's going to thank you 😄"
+  ],
+  "emoji": [
+   "Haha thanks!",
+   "Thanks for stopping by!",
+   "Love the energy 🙌",
+   "That reaction made my day 😄"
+  ]
  },
  "greetings_name": [
   "Hey {name}!",

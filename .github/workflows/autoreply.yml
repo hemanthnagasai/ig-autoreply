@@ -36,6 +36,7 @@ jobs:
       IG_USERNAME: hemanth_chakka
       STATE_FILE: state/state.json
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # optional: when set, Claude writes each reply fresh
     steps:
       - uses: actions/checkout@v4
 

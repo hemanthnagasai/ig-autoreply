@@ -26,6 +26,7 @@ TOKEN = os.environ.get("IG_TOKEN", "")
 UID = os.environ.get("IG_USER_ID", "17841414351865744")
 ME = os.environ.get("IG_USERNAME", "hemanth_chakka").lower()
 GH_TOKEN, GH_REPO = os.environ.get("GITHUB_TOKEN", ""), os.environ.get("GITHUB_REPOSITORY", "")
+ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 MODELS_URL = os.environ.get("MODELS_URL", "https://models.github.ai/inference/chat/completions")
 HERE = Path(__file__).resolve().parent
 RULES = HERE / "rules.json"
@@ -68,7 +69,7 @@ def http(url: str, data: bytes | None = None, method: str = "GET", headers: dict
         except Exception:
             msg = "unreadable error body"
         msg = f"HTTP {e.code}: {msg}"
-        for secret in (TOKEN, GH_TOKEN):
+        for secret in (TOKEN, GH_TOKEN, ANTHROPIC_KEY):
             if secret:
                 msg = msg.replace(secret, "<token>")
         raise ApiError(msg) from None
@@ -195,12 +196,18 @@ def bank_public(state: dict, conf: dict, resource: dict, kind: str) -> str:
     return fresh(state, banks.get(kind) or banks["other"], "pub_" + kind, 4, thing=resource["name"])
 
 
-def bank_opener(state: dict, conf: dict, name: str, topic: str, thing: str) -> str:
-    """Greeting + sometimes a line naming the reel + an intro; shapes vary (one line or two)."""
+def bank_opener(state: dict, conf: dict, name: str, topic: str, thing: str, kind: str = "other") -> str:
+    """Greeting + a line reacting to their comment (or sometimes naming the reel) + an intro; shapes vary."""
     named = bool(name) and random.random() < 0.75
     greet = fresh(state, conf["greetings_name"] if named else conf["greetings_plain"], "greet", 6, name=name)
+    if name and not named:  # the name either opens the DM or sits in a greeting-less intro ("Thanks Priya! ..."), never both
+        greet = "" if random.random() < 0.5 else greet
+        named = bool(greet)
     ctx = ""
-    if random.random() < 0.45:
+    react = conf.get("react_by_type", {}).get(kind)
+    if react and random.random() < 0.85:
+        ctx = fresh(state, react, "react_" + kind, 3)
+    elif random.random() < 0.45:
         ctx = fresh(state, conf["context_topic"], "ctx", 4, topic=topic) if topic else fresh(state, conf["context_plain"], "ctx", 3)
     intro = fresh(state, conf["intros"], "intro", 5, thing=thing, name="" if named else name)  # the name once, never twice
     parts = [x for x in (greet, ctx, intro) if x]
@@ -224,7 +231,7 @@ def acceptable(s: str, limit: int, recent: list, allow_empty: bool = False) -> b
 def writer(conf: dict, state: dict, ctx: dict) -> dict | None:
     """Asks the model for {'skip', 'public', 'opener'}. None when off, unavailable, or the answer fails a check."""
     w = conf.get("writer", {})
-    if not w.get("enabled") or not GH_TOKEN:
+    if not w.get("enabled") or not (ANTHROPIC_KEY or (w.get("github_models") and GH_TOKEN)):
         return None
     rp = state.setdefault("recent", {}).setdefault("w_public", [])
     ro = state["recent"].setdefault("w_opener", [])
@@ -250,9 +257,19 @@ def writer(conf: dict, state: dict, ctx: dict) -> dict | None:
                        "recent_public": state["recent"].get("w_public_txt", [])[-6:],
                        "recent_openers": state["recent"].get("w_opener_txt", [])[-6:]}, ensure_ascii=False)
     out, errors = None, []
-    endpoints = w.get("endpoints") or [{"url": MODELS_URL, "model": w.get("model", "openai/gpt-4.1-mini")}]
-    start = state.get("writer_endpoint", 0) % len(endpoints)  # the one that last worked goes first
-    for k in [start] + [i for i in range(len(endpoints)) if i != start]:
+    if ANTHROPIC_KEY:  # Claude writes the replies when the owner has added the ANTHROPIC_API_KEY secret
+        body = json.dumps({"model": w.get("claude_model", "claude-haiku-5-5"), "max_tokens": 300, "temperature": 1.0,
+                           "system": system, "messages": [{"role": "user", "content": user}]}).encode()
+        try:
+            res = http("https://api.anthropic.com/v1/messages", body, "POST",
+                       {"x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json"}, timeout=30)
+            txt = "".join(b.get("text", "") for b in res.get("content", []))
+            out = json.loads(txt[txt.index("{"): txt.rindex("}") + 1])
+        except (ApiError, ValueError, KeyError, TypeError) as e:
+            errors.append(f"claude: {str(e)[:90]}")
+    endpoints = (w.get("endpoints") or [{"url": MODELS_URL, "model": w.get("model", "openai/gpt-4.1-mini")}]) if w.get("github_models") else []
+    start = state.get("writer_endpoint", 0) % max(len(endpoints), 1)  # the one that last worked goes first
+    for k in ([start] + [i for i in range(len(endpoints)) if i != start]) if endpoints and out is None else []:
         ep = endpoints[k]
         body = json.dumps({"model": ep["model"], "temperature": 1.0, "max_tokens": 200,
                            "response_format": {"type": "json_object"},
@@ -384,7 +401,7 @@ def scan_comments(conf: dict, state: dict) -> None:
                 entry["s"] = "repeat"; C["public_only"] += 1
                 log("second comment from someone already sent this post's resource: public reply only")
             else:
-                opener = w["opener"] if w else bank_opener(state, conf, name, topic, res["name"])
+                opener = w["opener"] if w else bank_opener(state, conf, name, topic, res["name"], kind)
                 try:
                     send_dm({"comment_id": cid}, build_dm(conf, state, opener, res, post["extra"]))
                     entry["s"] = "sent"; C["sent"] += 1
@@ -474,7 +491,7 @@ def selftest(conf: dict) -> int:
         pub = w["public"] if w else bank_public(state, conf, res, "repeat" if repeat else kind)
         print(f"[{'writer' if w else 'banks'} | {kind}] PUBLIC: {pub}")
         if not repeat:
-            op = w["opener"] if w else bank_opener(state, conf, name, topic, res["name"])
+            op = w["opener"] if w else bank_opener(state, conf, name, topic, res["name"], kind)
             dm = build_dm(conf, state, op, res, "")
             print(f"DM ({len(dm)} chars):\n{dm}")
     return 0
