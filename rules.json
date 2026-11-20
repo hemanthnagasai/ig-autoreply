@@ -299,6 +299,7 @@
   {"shortcode": "Det8djrx72X", "topic": "photo blackmail reel", "resource": "photo_blackmail"},
   {"shortcode": "DelKEatTxJm", "topic": "interview prep reel", "resource": "fresher_interview"},
   {"shortcode": "Dehl2-bzMtl", "topic": "intro reel", "resource": "site_home"},
+  {"match": ["first day on the stock market", "claude's company one week"], "topic": "Anthropic day-one reel", "resource": "anthropic_ipo"},
   {"match": ["ai team", "how i make my reels", "how my reels are made"], "topic": "how I make my reels reel", "resource": "reel_setup"},
   {"match": ["code word", "your voice"], "topic": "family code word reel", "resource": "safety_card"},
   {"match": ["power cut", "power will be cut", "electricity", "tgspdcl"], "topic": "power cut SMS reel", "resource": "safety_card"},
