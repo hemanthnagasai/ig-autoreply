@@ -40,7 +40,9 @@ Rules that keep it human:
 1. `shortcode`: the part after `/reel/` (or `/p/`) in the post's link. Every post on the grid is listed this way.
 2. `match`: words found in the caption's first two lines (a line starting with "Comment" does not count). This is how
    queued posts work before they have a link: family code word, power-cut scam, real-or-AI photo, PF missed call,
-   ChatGPT codes, the WhatsApp carousel.
+   ChatGPT codes, the WhatsApp carousel, the Anthropic day-one reel ("first day on the stock market" -> `anthropic_ipo`)
+   and the how-I-make-reels reel ("AI team" -> `reel_setup`, the toolkit + guide link).
+   A guess prompt in a caption ("Comment HIGHER or LOWER") is not a keyword: such words go in `ignore_keywords`.
 3. The caption's "Comment XYZ" keyword (capitals) -> the resource with that `keyword` (SAFE, CODE).
 
 A post none of these cover keeps its comments **waiting** (Instagram allows a DM up to 7 days after a comment) and
