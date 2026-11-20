@@ -309,6 +309,7 @@
  "posts": [
   {"match": ["hyderabad in 2050", "spot your area"], "topic": "Hyderabad in 2050 reel", "resource": "city_2050"},
   {"match": ["biryani in a tier", "hyderabad's food"], "topic": "AI ranks Hyderabad food (biryani A tier) reel", "resource": "ai_rank"},
+  {"shortcode": "Df92vvHzKZs", "topic": "Anthropic day-one reel", "resource": "anthropic_ipo"},
   {"shortcode": "Df7OqxWTxkI", "topic": "WhatsApp settings reel", "resource": "safety_card"},
   {"shortcode": "Df4oFBUzuPw", "topic": "voice note reel", "resource": "voice_note"},
   {"shortcode": "Df2GUelzUt-", "topic": "Anthropic IPO reel", "resource": "anthropic_ipo"},
