@@ -42,7 +42,7 @@ Rules that keep it human:
    queued posts work before they have a link: family code word, power-cut scam, real-or-AI photo, PF missed call,
    ChatGPT codes, the WhatsApp carousel, the Anthropic day-one reel ("first day on the stock market" -> `anthropic_ipo`)
    the how-I-make-reels reel ("AI team" -> `reel_setup`, the toolkit + guide link) and the Hyderabad in 2050 reel
-   ("hyderabad in 2050" / "spot your area" -> `city_2050`, the Gemini prompt to make your own area in 2050).
+   ("hyderabad in 2050" / "spot your area" -> `city_2050`, the Gemini prompt to make your own area in 2050) and the AI food tier reel ("biryani in a tier" / "hyderabad's food" -> `ai_rank`, the prompt to make AI rank anything).
    A guess prompt in a caption ("Comment HIGHER or LOWER") is not a keyword: such words go in `ignore_keywords`.
 3. The caption's "Comment XYZ" keyword (capitals) -> the resource with that `keyword` (SAFE, CODE).
 

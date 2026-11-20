@@ -186,6 +186,11 @@
    ],
    "dm": "🏙️ Make your area in 2050 (free, 2 minutes)\n1. Take a clear photo of your street or a landmark near you.\n2. Open the Gemini app, tap + and add the photo.\n3. Paste this: Keep the buildings and the landmark in this photo exactly as they are, same angle and light. Change only the world around it to the year 2050: clean streets with trees, small electric autos, a tram line, rooftop gardens, people in everyday Indian clothes. Photoreal, no text.\n4. Not happy? Reply in the same chat: more trees, night lights, or rain.\nPost it and tag me. Your area might be next in the series."
   },
+  "ai_rank": {
+   "name": "make AI rank anything",
+   "marker": "Make AI rank anything",
+   "dm": "🏆 Make AI rank anything (free, 1 minute)\n1. Open ChatGPT, Gemini or Claude.\n2. Paste this: Rank these from S tier to C tier like a strict but funny food critic from Hyderabad: [your list]. Give each one a one-line reason. Put one popular favourite lower than people expect and defend it.\n3. Swap the list for anything: Telugu movies, your college canteen, cricket players, phones.\nScreenshot the result and post it. Tag me if the AI starts a fight 😄"
+  },
   "safety_card": {
    "keyword": "SAFE",
    "name": "family safety card",
@@ -303,6 +308,7 @@
  },
  "posts": [
   {"match": ["hyderabad in 2050", "spot your area"], "topic": "Hyderabad in 2050 reel", "resource": "city_2050"},
+  {"match": ["biryani in a tier", "hyderabad's food"], "topic": "AI ranks Hyderabad food (biryani A tier) reel", "resource": "ai_rank"},
   {"shortcode": "Df7OqxWTxkI", "topic": "WhatsApp settings reel", "resource": "safety_card"},
   {"shortcode": "Df4oFBUzuPw", "topic": "voice note reel", "resource": "voice_note"},
   {"shortcode": "Df2GUelzUt-", "topic": "Anthropic IPO reel", "resource": "anthropic_ipo"},
