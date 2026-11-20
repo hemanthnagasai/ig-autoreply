@@ -167,6 +167,25 @@
  ],
  "_follow_gate_note": "19 Nov test: Meta lets this app send ONE private-reply DM per comment, but refuses any follow-up message (code 10, outside allowed window) and the follow check (code 230), even after the person replies. A follow gate needs Meta app review (Advanced Access + messaging webhooks). Until then follow_gate stays false.",
  "resources": {
+  "city_2050": {
+   "keyword": "2050",
+   "name": "make your area in 2050",
+   "aliases": [
+    "2050 prompt",
+    "my area"
+   ],
+   "marker": "Make your area in 2050",
+   "public_replies": [
+    "Sent! Check your DMs",
+    "Done, check your inbox 🙂",
+    "In your DMs now 🏙️",
+    "Just sent it 📩",
+    "Sent you a DM!",
+    "Sent. If you don't see it, check message requests",
+    "Check DMs, it's there"
+   ],
+   "dm": "🏙️ Make your area in 2050 (free, 2 minutes)\n1. Take a clear photo of your street or a landmark near you.\n2. Open the Gemini app, tap + and add the photo.\n3. Paste this: Keep the buildings and the landmark in this photo exactly as they are, same angle and light. Change only the world around it to the year 2050: clean streets with trees, small electric autos, a tram line, rooftop gardens, people in everyday Indian clothes. Photoreal, no text.\n4. Not happy? Reply in the same chat: more trees, night lights, or rain.\nPost it and tag me. Your area might be next in the series."
+  },
   "safety_card": {
    "keyword": "SAFE",
    "name": "family safety card",
@@ -283,6 +302,7 @@
   }
  },
  "posts": [
+  {"match": ["hyderabad in 2050", "spot your area"], "topic": "Hyderabad in 2050 reel", "resource": "city_2050"},
   {"shortcode": "Df7OqxWTxkI", "topic": "WhatsApp settings reel", "resource": "safety_card"},
   {"shortcode": "Df4oFBUzuPw", "topic": "voice note reel", "resource": "voice_note"},
   {"shortcode": "Df2GUelzUt-", "topic": "Anthropic IPO reel", "resource": "anthropic_ipo"},
