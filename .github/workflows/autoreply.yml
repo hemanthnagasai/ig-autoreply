@@ -62,17 +62,18 @@ jobs:
           path: state
           key: autoreply-state-${{ github.run_id }}-${{ github.run_attempt }}
 
-      - name: Backup trigger (only when GitHub's timer is not firing)
+      - name: Chain the next run (GitHub's */5 timer often fires only every few hours)
         if: always() && !(github.event_name == 'workflow_dispatch' && (inputs.dry_run || inputs.selftest))
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          last=$(gh run list --workflow autoreply.yml --event schedule --limit 1 --json createdAt -q '.[0].createdAt' || true)
-          now=$(date -u +%s)
-          if [ -n "$last" ] && [ $(( now - $(date -u -d "$last" +%s) )) -lt 720 ]; then
-            echo "timer is firing (last timed run $last): no backup needed"
+          # Another live run already waiting or running (not this one)? Then it carries the chain.
+          others=$(gh run list --workflow autoreply.yml --limit 20 --json databaseId,status \
+            -q "[.[] | select(.databaseId != ${{ github.run_id }}) | select(.status == \"queued\" or .status == \"in_progress\" or .status == \"waiting\" or .status == \"pending\")] | length" || echo 0)
+          if [ "${others:-0}" -gt 0 ]; then
+            echo "another run is already queued or running: no chain needed"
           else
-            echo "no timed run in the last 12 minutes: starting the next run"
+            echo "starting the next run"
             gh workflow run autoreply.yml --ref main -f dry_run=false
           fi
 
