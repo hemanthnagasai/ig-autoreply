@@ -2,8 +2,8 @@
 
 1. Any comment on a post gets one private-reply DM carrying THAT post's own resource, and a short public reply.
    The post finds its resource in rules.json `posts` (by its link's shortcode, then by words in the caption's first
-   lines, then by the caption's "Comment XYZ" keyword). A post with no resource keeps its comments waiting and opens
-   one GitHub issue.
+   lines, then by the caption's "Comment XYZ" keyword). A post none of these cover gets `default_resource` (the site
+   link) and opens one GitHub issue; only when no default is set do its comments wait.
 2. Writing like a person: the DM opener (greeting + a line reacting to what they said) and the public reply are
    written fresh for each comment by a small model on GitHub Models (free, the workflow's own GITHUB_TOKEN). Every
    result is checked (no links, numbers, promises, em dashes, bot phrases, no repeat of a recent line); anything that
@@ -140,6 +140,9 @@ def resolve_post(conf: dict, media: dict) -> dict | None:
         r = next((r for r in res.values() if r.get("keyword") == kw), None)
         if r:
             return {"resource": r, "topic": "", "extra": ""}
+    fb = conf.get("default_resource")
+    if fb in res:  # no entry yet: every post still gets a DM (the site link), and the owner is told once
+        return {"resource": res[fb], "topic": "", "extra": "", "fallback": True}
     return None
 
 
@@ -376,6 +379,12 @@ def scan_comments(conf: dict, state: dict) -> None:
                       f"gives, so those comments are waiting (Instagram allows a DM up to 7 days after a comment). Add a "
                       f"`posts` entry (shortcode `{shortcode(m.get('permalink'))}` + resource) and push.")
                 continue
+            if post.get("fallback"):
+                C["fallback"] = C.get("fallback", 0) + 1
+                alert(state, "fallback-" + m["id"], "A post is getting the default DM (site link)",
+                      f"Post {m.get('permalink')} has no entry in `rules.json`, so its commenters are getting the default "
+                      f"DM (the site link). If this post should give its own resource, add a `posts` entry (shortcode "
+                      f"`{shortcode(m.get('permalink'))}` + resource) and push; later comments then get that instead.")
             if SPAM.search(text):
                 C["skipped_spam"] += 1
                 if not DRY:

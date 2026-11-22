@@ -46,8 +46,9 @@ Rules that keep it human:
    A guess prompt in a caption ("Comment HIGHER or LOWER") is not a keyword: such words go in `ignore_keywords`.
 3. The caption's "Comment XYZ" keyword (capitals) -> the resource with that `keyword` (SAFE, CODE).
 
-A post none of these cover keeps its comments **waiting** (Instagram allows a DM up to 7 days after a comment) and
-opens one GitHub issue (an email). Add its entry, push, and the waiting comments are answered on the next run.
+A post none of these cover still gets DMs: its commenters get `default_resource` (today `site_home`, the site link),
+and one GitHub issue (an email) says so. Every post is covered even if nobody adds it here (owner, 21 Nov). To give
+that post its own resource instead, add its entry and push; later comments get the new one.
 
 ## Adding a new post
 

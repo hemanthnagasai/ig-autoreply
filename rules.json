@@ -4,6 +4,8 @@
  "any_comment_since": "2026-11-19T13:45:00+0000",
  "_any_comment_since_note": "Switch-over to any-comment mode (19 Nov, owner). Comments older than this are never touched, so nobody from before gets a late or second DM.",
  "follow_gate": false,
+ "default_resource": "site_home",
+ "_default_resource_note": "21 Nov, owner: every post must get auto-DMs whether or not it was added here. A post with no posts entry, no caption match and no Comment keyword gets this resource (the site link) and opens one GitHub issue so its own resource can be added.",
  "min_delay_minutes": 2,
  "max_delay_minutes": 7,
  "_delay_note": "Each comment waits its own random 2-7 minutes before the reply, so replies don't land at a machine-like fixed time.",
