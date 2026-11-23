@@ -336,6 +336,7 @@
   {"shortcode": "DelKEatTxJm", "topic": "interview prep reel", "resource": "fresher_interview"},
   {"shortcode": "Dehl2-bzMtl", "topic": "intro reel", "resource": "site_home"},
   {"shortcode": "DgDLlvCzeCM", "topic": "power cut SMS reel (grid 19)", "resource": "safety_card"},
+  {"shortcode": "DgFh_puIxHd", "topic": "how I make my reels (R21, grid 20, posted Mon 23 Nov 7:23 pm)", "resource": "reel_setup"},
   {"match": ["first day on the stock market", "claude's company one week"], "topic": "Anthropic day-one reel", "resource": "anthropic_ipo"},
   {"match": ["ai team", "how i make my reels", "how my reels are made"], "topic": "how I make my reels reel", "resource": "reel_setup"},
   {"match": ["code word", "your voice"], "topic": "family code word reel", "resource": "safety_card"},
