@@ -305,7 +305,7 @@
   },
   "voice_game": {
    "name": "voice game answer + tools",
-   "dm": "🎙️ The answer: voice 2 was the real me. Voice 1 was my AI clone.\nHow the fake was made: VoxCPM2, a free voice model that runs offline on a laptop, from about 20 seconds of my own voice. I matched the loudness and added a little of my room noise so it was a fair test.\nIf a clone can fool you for a few seconds, a scammer's can too. Set a family code word, and if a call asks for money, hang up and call back on the saved number.\nThe rest of my reel setup: Claude Code (paid plan), Remotion for video from code, Whisper to check the words. Free swaps: CapCut, DaVinci Resolve.\nEvery tool with its link and the steps: https://techwithhemanth.vercel.app/library/how-i-make-reels"
+   "dm": "🎙️ The answer: voice 2 was the real me. Voice 1 was my AI clone.\nHow the fake was made: VoxCPM2, a free voice model that runs offline on a laptop, from about 20 seconds of my own voice. I matched the loudness and brightened it a little so neither clip sounded louder or sharper.\nIf a clone can fool you for a few seconds, a scammer's can too. Set a family code word, and if a call asks for money, hang up and call back on the saved number.\nThe rest of my reel setup: Claude Code (paid plan), Remotion for video from code, Whisper to check the words. Free swaps: CapCut, DaVinci Resolve.\nEvery tool with its link and the steps: https://techwithhemanth.vercel.app/library/how-i-make-reels"
   },
   "site_home": {
    "name": "link to my site",
