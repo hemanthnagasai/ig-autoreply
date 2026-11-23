@@ -303,6 +303,10 @@
    "name": "my full reel-making setup",
    "dm": "🛠️ How I make my reels:\nBrain: Claude Code (paid Claude plan)\nSkills: github.com/Jakeschincariol/instagram-agent-skill + github.com/social-media-skills/skills + Anthropic's Marketing plugin\nVideo from code: Remotion + remocn (no editing app)\nVoice: my cloned voice. Free offline swap: VoxCPM2\nChecks: Whisper listens for wrong words, a blind AI judge scores it, 90/100 to pass\nResearch + stats: Meta's free Instagram API\nThis DM: github.com/hemanthnagasai/ig-autoreply\nFree swaps: CapCut, DaVinci Resolve, ManyChat\nEvery tool with its link, the 11 steps and the free-swap table: https://techwithhemanth.vercel.app/library/how-i-make-reels"
   },
+  "voice_game": {
+   "name": "voice game answer + tools",
+   "dm": "🎙️ The answer: voice 2 was the real me. Voice 1 was my AI clone.\nHow the fake was made: VoxCPM2, a free voice model that runs offline on a laptop, from about 20 seconds of my own voice. I matched the loudness and added a little of my room noise so it was a fair test.\nIf a clone can fool you for a few seconds, a scammer's can too. Set a family code word, and if a call asks for money, hang up and call back on the saved number.\nThe rest of my reel setup: Claude Code (paid plan), Remotion for video from code, Whisper to check the words. Free swaps: CapCut, DaVinci Resolve.\nEvery tool with its link and the steps: https://techwithhemanth.vercel.app/library/how-i-make-reels"
+  },
   "site_home": {
    "name": "link to my site",
    "dm": "Everything I make, with the steps and prompts, is here: https://techwithhemanth.vercel.app"
@@ -340,6 +344,7 @@
    "extra": "Bonus from the reel: photo looks too wild? Gemini > add the photo > ask \"Is this AI-generated?\". No mark doesn't mean it's real, so check the news before you forward."},
   {"match": ["pf balance", "epfo", "missed call"], "topic": "PF balance reel", "resource": "pf_missed_call"},
   {"match": ["chatgpt \"codes\"", "codes"], "topic": "ChatGPT codes reel", "resource": "chatgpt_codes"},
+  {"match": ["which one is me", "one of these two voices"], "topic": "Which one is me voice game reel", "resource": "voice_game"},
   {"match": ["whatsapp"], "topic": "WhatsApp settings post", "resource": "safety_card"}
  ],
  "_posts_note": "How a post finds its resource: 1) its shortcode (the part after /reel/ in its link), 2) the first 'match' entry whose words appear in the caption's first two lines (not counting a line that starts with 'Comment'), 3) the 'Comment XYZ' keyword in its caption. A post with none of these keeps its comments waiting (up to 6 days) and opens one GitHub issue; add its entry and push, and the waiting comments get answered on the next run."
