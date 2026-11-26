@@ -102,3 +102,6 @@ writer is on, it sees the comment text and a first name, both already public on 
 - Never run two senders at once (they keep separate state and would DM twice): ootto's auto-reply is OFF since 19 Nov,
   and the old laptop copy (Windows task "IG AutoReply SAFE-CODE", folder `E:/Instagram/autopilot/autoreply/`) is disabled.
 - Instagram allows a private reply only within 7 days of a comment; older comments are skipped (`max_comment_age_days` 6).
+
+
+**23 Nov 2026 note:** proposed new comment keywords from the post kit (MOCK, PLAN, NOTES, SHORT, TRIP, LENS, CHAI, WORK) are NOT live; each needs the owner's yes and a `resources` + `posts` entry before its post goes out.
