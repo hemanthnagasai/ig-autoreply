@@ -165,6 +165,16 @@ def main() -> int:
         m["grid"] = count - i  # newest first: the newest post is grid = media_count
     new = [m for m in reversed(media) if shortcode(m.get("permalink")) not in known
            and datetime.strptime(m["timestamp"], "%Y-%m-%dT%H:%M:%S%z") > since]
+    if not DRY and not book.get("site_key_ok"):  # once: prove the deploy key may push to the site repo
+        try:
+            d = tempfile.mkdtemp(); git(d, "clone", "-q", "--depth", "1", SITE_REPO, ".")
+            git(d, "push", "--dry-run", "-q", "origin", "HEAD:refs/heads/main")
+            book["site_key_ok"] = datetime.now(IST).isoformat(timespec="minutes"); log("site deploy key can push")
+        except Exception as e:
+            book["site_key_ok"] = ""; log(f"site deploy key check failed: {type(e).__name__}")
+            issue("Cloud posted steps: the site deploy key cannot push",
+                  "posted.py could not push to hemanthnagasai/aiwithhemanth with SITE_DEPLOY_KEY. Website updates after posting will not happen until this is fixed.")
+        LOG.write_text(json.dumps(book, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     if not new:
         log("no new post"); return 0
     site = None
