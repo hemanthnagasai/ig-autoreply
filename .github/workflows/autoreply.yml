@@ -47,6 +47,28 @@ jobs:
           key: autoreply-state-${{ github.run_id }}
           restore-keys: autoreply-state-
 
+      - name: Posted steps for any new post (auto-DM entry + website live)
+        # never blocks the DM replies below: a failure here only shows as a warning on the run
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (inputs.selftest || inputs.dry_run)) }}
+        continue-on-error: true
+        timeout-minutes: 7
+        env:
+          SITE_DEPLOY_KEY: ${{ secrets.SITE_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SITE_DEPLOY_KEY" > ~/.ssh/site_key && chmod 600 ~/.ssh/site_key
+          ssh-keyscan -q github.com >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/site_key -o IdentitiesOnly=yes"
+          python posted.py
+          if ! git diff --quiet -- rules.json posted.json || [ -n "$(git ls-files --others -- posted.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add rules.json posted.json
+            git commit -q -m "Posted steps (cloud): shortcode entry for the newest post"
+            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          fi
+          rm -f ~/.ssh/site_key
+
       - name: Self-test (made-up comments only)
         if: github.event_name == 'workflow_dispatch' && inputs.selftest
         run: python autoreply.py --selftest
