@@ -339,6 +339,7 @@
   {"shortcode": "DgFh_puIxHd", "topic": "how I make my reels (R21, grid 20, posted Mon 23 Nov 7:23 pm)", "resource": "reel_setup"},
   {"shortcode": "DgIHGq6T9zB", "topic": "Jensen is back reel (R25, grid 21, posted Tue 24 Nov 7:25 pm)", "resource": "site_home"},
   {"shortcode": "DgK2tbZT0B_", "topic": "4 ChatGPT codes reel (R20, grid 22, posted Wed 25 Nov 9:00 pm)", "resource": "chatgpt_codes"},
+  {"shortcode": "DgNdhipzOqF", "topic": "AI ranks Hyderabad food (biryani A tier) reel (R23, grid 22, posted Thu 26 Nov 9:17 pm)", "resource": "ai_rank"},
   {"match": ["first day on the stock market", "claude's company one week"], "topic": "Anthropic day-one reel", "resource": "anthropic_ipo"},
   {"match": ["ai team", "how i make my reels", "how my reels are made"], "topic": "how I make my reels reel", "resource": "reel_setup"},
   {"match": ["code word", "your voice"], "topic": "family code word reel", "resource": "safety_card"},
